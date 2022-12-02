@@ -9,6 +9,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Expression\Expression.csproj" />
+      <ProjectReference Include="..\NonLinealSystemEquation\NonLinealSystemEquation.csproj" />
     </ItemGroup>
 
 </Project>

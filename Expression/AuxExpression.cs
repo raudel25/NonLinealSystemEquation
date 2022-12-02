@@ -36,7 +36,7 @@ public static class Aux
         return variables.ToList();
     }
 
-    public static void VariablesToExpression(ExpressionType exp, HashSet<char> variables)
+    private static void VariablesToExpression(ExpressionType exp, HashSet<char> variables)
     {
         VariableExpression? variable = exp as VariableExpression;
 

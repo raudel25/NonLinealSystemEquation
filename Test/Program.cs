@@ -1,5 +1,12 @@
 ﻿using Expression;
+using NonLinealSystemEquation;
 
-var e=ConvertExpression.Parsing("sin(pi)");
+string[] s=new string[2];
 
-Console.WriteLine(e);
+s[0]="x=sin(y)";
+s[1]="y=2+z";
+
+ExpressionType[] e=ConvertEquation.ParsingSystem(s);
+
+Console.WriteLine(e.Length);
+Console.WriteLine(e[1]);
