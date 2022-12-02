@@ -18,35 +18,38 @@ public static class ConvertEquation
         return ReduceExpression.Reduce(exp1 - exp2);
     }
 
-    public static ExpressionType[] ParsingSystem(string[] s)
+    public static (ExpressionType[], List<char>) ParsingSystem(string[] s)
     {
         ExpressionType[] exps = new ExpressionType[s.Length];
+        List<char> variables = new List<char>(s.Length);
 
         for (int i = 0; i < s.Length; i++)
         {
             ExpressionType? exp = Parsing(s[i]);
 
-            if (exp is null) return Array.Empty<ExpressionType>();
+            if (exp is null) return (Array.Empty<ExpressionType>(), variables);
 
             exps[i] = exp;
         }
 
-        if (!Check(exps)) return Array.Empty<ExpressionType>();
+        if (!Check(exps, variables)) return (Array.Empty<ExpressionType>(), variables);
 
-        return exps;
+        return (exps, variables);
     }
 
-    private static bool Check(ExpressionType[] exps)
+    private static bool Check(ExpressionType[] exps, List<char> variables)
     {
-        HashSet<char> variables = new HashSet<char>();
-        
+        HashSet<char> variablesSystem = new HashSet<char>();
+
         foreach (var item1 in exps)
         {
             List<char> aux = Aux.VariablesToExpression(item1);
 
-            foreach (var item2 in aux) variables.Add(item2);
+            foreach (var item2 in aux) variablesSystem.Add(item2);
         }
 
-        return variables.Count == exps.Length;
+        foreach (var item in variablesSystem) variables.Add(item);
+
+        return variablesSystem.Count == exps.Length;
     }
 }

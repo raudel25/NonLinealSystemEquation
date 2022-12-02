@@ -4,7 +4,7 @@ namespace NonLinealSystemEquation;
 
 public class VectorFunction
 {
-    private ExpressionType[] _vector;
+    private readonly ExpressionType[] _vector;
 
     public VectorFunction(ExpressionType[] exps)
     {

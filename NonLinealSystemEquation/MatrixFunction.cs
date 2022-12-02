@@ -4,7 +4,7 @@ namespace NonLinealSystemEquation;
 
 public class MatrixFunction
 {
-    private ExpressionType[,] _matrix;
+    private readonly ExpressionType[,] _matrix;
 
     public MatrixFunction(ExpressionType[] exps, List<char> variables)
     {
