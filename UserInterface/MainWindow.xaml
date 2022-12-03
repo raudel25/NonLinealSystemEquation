@@ -8,35 +8,71 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="300"></RowDefinition>
-            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-        
+
         <TextBlock Grid.Row="0" FontSize="20" HorizontalAlignment="Center" Margin="10">
             Solucionador de Sistemas de Ecuaciones no Lineales
         </TextBlock>
-        
-        <Grid Grid.Row="1" HorizontalAlignment="Center">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-            </Grid.RowDefinitions>
-            
-                <Grid Grid.Row="0" Name="Equations" Margin="10"></Grid>
-                <TextBlock Grid.Row="1" Name="Show" Margin="10" FontSize="16" HorizontalAlignment="Center">
-                
-            </TextBlock>
-        </Grid>
-        
-        <Grid Grid.Row="2" HorizontalAlignment="Center">
+
+        <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100"></ColumnDefinition>
-                <ColumnDefinition Width="50"></ColumnDefinition>
-                <ColumnDefinition Width="100"></ColumnDefinition>
+                <ColumnDefinition Width="400"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            
-            <Button Grid.Column="0" Click="AddEquation">Añadir Ecuación</Button>
-            <Button Grid.Column="2" Click="Resolve">Resolver</Button>
+
+            <Grid Grid.Column="0" Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0" Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="250"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" HorizontalAlignment="Left" FontSize="18">
+                        Introduzca sus Ecuaciones
+                    </TextBlock>
+                    <Button Grid.Column="1" Click="AddEquation" HorizontalAlignment="Right" Width="60" FontSize="14">
+                        Añadir
+                    </Button>
+                </Grid>
+
+                <Grid Grid.Row="1" Name="Equations" Margin="5"></Grid>
+            </Grid>
+
+            <Grid Grid.Column="1" Margin="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="250"></RowDefinition>
+                    <RowDefinition Height="30"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Name="Show" FontSize="16" VerticalAlignment="Top" HorizontalAlignment="Center">
+                </TextBlock>
+
+                <Grid Grid.Row="1" Name="Initial" HorizontalAlignment="Center" Visibility="Collapsed">
+
+                </Grid>
+
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <Button Grid.Column="0" Click="InitialValue" HorizontalAlignment="Left" Width="80" Height="30"
+                            FontSize="14">
+                        Valor Inicial
+                    </Button>
+                    <Button Grid.Column="1" Click="Resolve" HorizontalAlignment="Right" Width="80" Height="30"
+                            FontSize="14">
+                        Resolver
+                    </Button>
+                </Grid>
+            </Grid>
         </Grid>
+
     </Grid>
 </Window>

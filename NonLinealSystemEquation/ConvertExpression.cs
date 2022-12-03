@@ -2,7 +2,7 @@
 
 namespace NonLinealSystemEquation;
 
-public static class ConvertEquation
+internal static class ConvertEquation
 {
     private static ExpressionType? Parsing(string s)
     {
@@ -18,7 +18,7 @@ public static class ConvertEquation
         return ReduceExpression.Reduce(exp1 - exp2);
     }
 
-    public static (ExpressionType[], List<char>) ParsingSystem(string[] s)
+    internal static (ExpressionType[], List<char>) ParsingSystem(string[] s)
     {
         ExpressionType[] exps = new ExpressionType[s.Length];
         List<char> variables = new List<char>(s.Length);
