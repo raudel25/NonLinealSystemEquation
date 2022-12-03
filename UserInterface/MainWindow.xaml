@@ -22,8 +22,8 @@
                 <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
             
-            <Grid Grid.Row="0" Name="Equations" Margin="10"></Grid>
-            <TextBlock Grid.Row="1" Name="Show" Margin="10" FontSize="16" HorizontalAlignment="Center">
+                <Grid Grid.Row="0" Name="Equations" Margin="10"></Grid>
+                <TextBlock Grid.Row="1" Name="Show" Margin="10" FontSize="16" HorizontalAlignment="Center">
                 
             </TextBlock>
         </Grid>

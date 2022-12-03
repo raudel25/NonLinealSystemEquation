@@ -75,16 +75,19 @@ namespace UserInterface
 
             for (int i = 0; i < s.Length; i++) s[i] = this._equationsValue[i].Text;
 
-            List<(char, double)> result = SystemEquation.ResolveSystem(s);
+            (List<(char, double)> result,SystemEquation.SystemState state) = SystemEquation.ResolveSystem(s);
 
             string answer;
 
-            if (result.Count != 0)
+            if (state == SystemEquation.SystemState.Correct)
             {
                 answer = "\n";
                 foreach (var item in result) answer = $"{answer}{item.Item1} = {item.Item2}\n";
             }
-            else answer = "Las ecuaciones no son válidas";
+            else
+                answer = state == SystemEquation.SystemState.IncorrectEquations
+                    ? "Las ecuaciones no son válidas"
+                    : "No se ha podido encontrar solución";
 
             Show.Text = answer;
         }
