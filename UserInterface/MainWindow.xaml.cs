@@ -94,7 +94,7 @@ namespace UserInterface
                     ? "Las ecuaciones no son válidas"
                     : "No se ha podido encontrar solución";
 
-            Show.Text = answer;
+            Result.Text = answer;
             
             this._initialValues.Clear();
         }

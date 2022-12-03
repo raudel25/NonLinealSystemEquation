@@ -49,7 +49,7 @@
                     <RowDefinition Height="30"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Name="Show" FontSize="16" VerticalAlignment="Top" HorizontalAlignment="Center">
+                <TextBlock Grid.Row="0" Name="Result" FontSize="16" VerticalAlignment="Top" HorizontalAlignment="Center">
                 </TextBlock>
 
                 <Grid Grid.Row="1" Name="Initial" HorizontalAlignment="Center" Visibility="Collapsed">
