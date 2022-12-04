@@ -4,10 +4,18 @@ Este proyecto tiene como objetivo crear una aplicación que permita resolver un 
 
 ## Dependencias
 
-El proyecto está desarrollado en **C# .NET 6.0**, en la plataforma de **WPF**, en la cual se basa la interfaz gráfica. Para ejecutarlo debe abrir su terminal en la raíz del proyecto y ejecutar el siguiente comando.
+El proyecto está desarrollado en **C# .NET 6.0**, en la plataforma de <a href="https://avaloniaui.net/">Avalonia</a>, en la cual se basa la interfaz gráfica. Para ejecutarlo debe abrir su terminal en la raíz del proyecto y ejecutar el siguiente comando.
 
 ```bash
-dotnet run --project UserInterface
+make
 ```
+
+para Linux y
+
+```bash
+dotnet run --project UserInterfaceAUI
+```
+
+para Windows.
 
 Además la biblioteca de clases `NonLinealSystemEquation` cuenta con la siguiente dependencia: <a href="https://numerics.mathdotnet.com/">Math.NET Numerics</a>.
