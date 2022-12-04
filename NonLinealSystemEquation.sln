@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserInterface", "UserInterface\UserInterface.csproj", "{724C1498-8FEE-4777-9995-455DE553759A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserInterfaceAUI", "UserInterfaceAUI\UserInterfaceAUI.csproj", "{3158A328-D2C0-4076-9E61-B6E9C861050A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{724C1498-8FEE-4777-9995-455DE553759A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{724C1498-8FEE-4777-9995-455DE553759A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{724C1498-8FEE-4777-9995-455DE553759A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3158A328-D2C0-4076-9E61-B6E9C861050A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3158A328-D2C0-4076-9E61-B6E9C861050A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3158A328-D2C0-4076-9E61-B6E9C861050A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3158A328-D2C0-4076-9E61-B6E9C861050A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
