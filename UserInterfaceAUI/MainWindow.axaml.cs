@@ -26,7 +26,7 @@ public partial class MainWindow : Window
         InitializeComponent();
     }
 
-    private void AddEquation(object sender, RoutedEventArgs e)
+    private void AddEquation(object? sender, RoutedEventArgs e)
     {
         Initial.IsVisible = false;
 
@@ -46,6 +46,9 @@ public partial class MainWindow : Window
         button.Click += EliminateEquation;
         button.Height = 30;
         button.Width = 30;
+        button.HorizontalContentAlignment = HorizontalAlignment.Center;
+        button.Background = Brushes.Azure;
+        button.Content = "X";
 
         this._eliminateEquations.Add(button);
         this._equationsValue.Add(text);
@@ -62,8 +65,10 @@ public partial class MainWindow : Window
         Equations.Children.Add(grid);
     }
 
-    private void EliminateEquation(object sender, RoutedEventArgs e)
+    private void EliminateEquation(object? sender, RoutedEventArgs e)
     {
+        if(sender is null) return;
+        
         Initial.IsVisible = false;
         int ind = this._eliminateEquations.IndexOf((Button)sender);
 
@@ -77,7 +82,7 @@ public partial class MainWindow : Window
         Equations.RowDefinitions.RemoveAt(Equations.RowDefinitions.Count - 1);
     }
 
-    private void Resolve(object sender, RoutedEventArgs e)
+    private void Resolve(object? sender, RoutedEventArgs e)
     {
         Initial.IsVisible = false;
         (List<(char, double)> result, SystemEquation.SystemState state) =
@@ -100,7 +105,7 @@ public partial class MainWindow : Window
         this._initialValues.Clear();
     }
 
-    private void InitialValue(object sender, RoutedEventArgs e)
+    private void InitialValue(object? sender, RoutedEventArgs e)
     {
         Initial.IsVisible = true;
         Initial.ColumnDefinitions.Clear();
@@ -148,7 +153,8 @@ public partial class MainWindow : Window
     {
         string[] s = new string[this._equationsValue.Count];
 
-        for (int i = 0; i < s.Length; i++) s[i] = this._equationsValue[i].Text;
+        for (int i = 0; i < s.Length; i++)
+            s[i] = this._equationsValue[i].Text is null ? "" : this._equationsValue[i].Text;
 
         return s;
     }

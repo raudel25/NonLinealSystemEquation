@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="Solucionador de Sistemas de Ecuaciones no Lineales" Height="450" Width="800">
-    <Grid>
+    <Grid Background="Aqua">
         <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="400"></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
@@ -64,10 +64,16 @@
                 </TextBlock>
                 
                 <Button Grid.Row="2" Click="Resolve" HorizontalAlignment="Right" VerticalAlignment="Bottom" 
-                        Width="100" Height="30" FontSize="14">
+                        Width="100" Height="30" FontSize="14" Background="Aqua">
                     Resolver
                 </Button>
 
             </Grid>
     </Grid>
+    <Window.Style>
+        <Style>
+            
+        </Style>
+    </Window.Style>
+    
 </Window>

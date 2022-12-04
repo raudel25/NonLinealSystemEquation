@@ -5,72 +5,73 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="UserInterfaceAUI.MainWindow"
         Title="Solucionador de Sistemas de Ecuaciones no Lineales">
-    <Grid>
+
+
+    <Grid Background="Silver">
         <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="600"></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-            </Grid.ColumnDefinitions>
+            <ColumnDefinition Width="600"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
 
-            <Grid Grid.Column="0" Margin="20">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="*"></RowDefinition>
-                </Grid.RowDefinitions>
+        <Grid Grid.Column="0" Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
 
-                <Grid Grid.Row="0" Margin="10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="250"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" HorizontalAlignment="Left" FontSize="18">
-                        Introduzca sus Ecuaciones
-                    </TextBlock>
-                    <Button Grid.Column="1" Click="AddEquation" HorizontalAlignment="Right" Width="80" FontSize="14"
-                            HorizontalContentAlignment="Center">
-                        Añadir
-                    </Button>
-                    
-                </Grid>
-
-                <Grid Grid.Row="1" Name="Equations" Margin="5"></Grid>
-                
-                <Grid Grid.Row="2" VerticalAlignment="Bottom">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    
-                    <Button Grid.Column="0" Click="InitialValue" HorizontalAlignment="Left" Width="100" Height="30"
-                            FontSize="14" HorizontalContentAlignment="Center">
-                        Valor Inicial
-                    </Button>
-                    
-                    <Grid Grid.Column="1" Name="Initial" HorizontalAlignment="Center" IsVisible="False">
-                    </Grid>
-                </Grid>
-            </Grid>
-
-            <Grid Grid.Column="1" Margin="20">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="*"></RowDefinition>
-                    <RowDefinition Height="*"></RowDefinition>
-                </Grid.RowDefinitions>
-                
-                <TextBlock Grid.Row="0" HorizontalAlignment="Center" Margin="10" FontSize="18">
-                    Resultado
+            <Grid Grid.Row="0" Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="250"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" HorizontalAlignment="Left" FontSize="18">
+                    Introduzca sus Ecuaciones
                 </TextBlock>
-                
-                <TextBlock Grid.Row="1" Name="Result" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center">
-                </TextBlock>
-                
-                <Button Grid.Row="2" Click="Resolve" HorizontalAlignment="Right" VerticalAlignment="Bottom"
-                        HorizontalContentAlignment="Center"
-                        Width="100" Height="30" FontSize="14">
-                    Resolver
+                <Button Grid.Column="1" Click="AddEquation" HorizontalAlignment="Right" Width="80" FontSize="14"
+                        HorizontalContentAlignment="Center" Background="Azure">
+                    Añadir
                 </Button>
 
             </Grid>
+
+            <Grid Grid.Row="1" Name="Equations" Margin="5"></Grid>
+
+            <Grid Grid.Row="2" VerticalAlignment="Bottom">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0" Click="InitialValue" HorizontalAlignment="Left" Width="100" Height="30"
+                        FontSize="14" HorizontalContentAlignment="Center" Background="Azure">
+                    Valor Inicial
+                </Button>
+
+                <Grid Grid.Column="1" Name="Initial" HorizontalAlignment="Center" IsVisible="False">
+                </Grid>
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Column="1" Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" HorizontalAlignment="Center" Margin="10" FontSize="18">
+                Resultado
+            </TextBlock>
+
+            <TextBlock Grid.Row="1" Name="Result" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center">
+            </TextBlock>
+
+            <Button Grid.Row="2" Click="Resolve" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                    HorizontalContentAlignment="Center" Width="100" Height="30" FontSize="14" Background="Azure">
+                Resolver
+            </Button>
+
+        </Grid>
     </Grid>
 </Window>
