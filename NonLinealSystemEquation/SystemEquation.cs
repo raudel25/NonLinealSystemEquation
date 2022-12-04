@@ -68,7 +68,7 @@ public static class SystemEquation
                 return (item, true, true);
         }
 
-        return ((sol + Vector<double>.Build.DenseOfArray(item)).ToArray(), sol.Norm(1) < 0.000001, false);
+        return ((sol + Vector<double>.Build.DenseOfArray(item)).ToArray(), sol.Norm(1) < 0.000000001, false);
     }
 
     private static List<(char, double)> BuildTuple(List<char> variables, double[] values)
