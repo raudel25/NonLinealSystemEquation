@@ -18,4 +18,4 @@ dotnet run --project SystemEquations
 
 para Windows.
 
-Además la biblioteca de clases `NonLinealSystemEquation` cuenta con la siguiente dependencia: <a href="https://numerics.mathdotnet.com/">Math.NET Numerics</a>.
+Además la biblioteca de clases `SystemEquationLogic` cuenta con la siguiente dependencia: <a href="https://numerics.mathdotnet.com/">Math.NET Numerics</a>.
