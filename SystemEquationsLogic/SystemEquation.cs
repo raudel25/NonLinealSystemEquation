@@ -5,6 +5,8 @@ namespace SystemEquationsLogic;
 
 public static class SystemEquation
 {
+    private static double _e = 0.0000000001;
+
     public enum SystemState
     {
         Error,
@@ -40,11 +42,17 @@ public static class SystemEquation
             for (int i = 0; i < variables.Count; i++) item[i] = 1;
         }
 
-        while (!stop&&!error)
+        while (!stop && !error)
         {
             List<(char, double)> evaluate = BuildTuple(variables, item);
 
-            (item, stop, error) = SolveIteration(matrixF.Evaluate(evaluate), vectorF.Evaluate(evaluate), item);
+            Matrix<double> m = Matrix<double>.Build.DenseOfArray(matrixF.Evaluate(evaluate));
+            Vector<double> v = Vector<double>.Build.DenseOfArray(vectorF.Evaluate(evaluate));
+
+            if (v.Norm(1) < _e) break;
+
+            (Vector<double> sol, error) = SolveIteration(m, v);
+            if (!error) (item, stop) = NewApprox(sol, item);
 
             ind++;
             if (!error) error = ind == 100000;
@@ -55,20 +63,27 @@ public static class SystemEquation
         return (BuildTuple(variables, item), SystemState.Correct);
     }
 
-    private static (double[], bool, bool) SolveIteration(double[,] matrix, double[] vector, double[] item)
+    private static (double[], bool) NewApprox(Vector<double> sol, double[] item)
     {
-        Matrix<double> m = Matrix<double>.Build.DenseOfArray(matrix);
-        Vector<double> v = Vector<double>.Build.DenseOfArray(vector);
+        Vector<double> item1 = Vector<double>.Build.DenseOfArray(item);
+        Vector<double> item2 = sol + item1;
 
-        Vector<double> sol = m.Solve(-v);
+        bool stop = sol.Norm(1) < _e;
+
+        return (item2.ToArray(), stop);
+    }
+
+    private static (Vector<double>, bool) SolveIteration(Matrix<double> matrix, Vector<double> vector)
+    {
+        Vector<double> sol = matrix.Solve(-vector);
 
         foreach (var i in sol)
         {
             if (i is Double.NaN || i is Double.NegativeInfinity || i is Double.PositiveInfinity)
-                return (item, true, true);
+                return (sol, true);
         }
 
-        return ((sol + Vector<double>.Build.DenseOfArray(item)).ToArray(), sol.Norm(1) < 0.000000001, false);
+        return (sol, false);
     }
 
     private static List<(char, double)> BuildTuple(List<char> variables, double[] values)

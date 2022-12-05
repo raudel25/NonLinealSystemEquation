@@ -1,6 +1,6 @@
 # System-of-Equations
 
-Este proyecto tiene como objetivo crear una aplicación que permita resolver un sistema de ecuaciones no lineales. Se basa en el funcionamiento de la extensión del algoritmo de **Newtón-Raphlson** para varias variables.
+Este proyecto tiene como objetivo crear una aplicación que permita resolver un sistema de ecuaciones no lineales. Se basa en el funcionamiento de la extensión del algoritmo de **Newtón-Raphson** para varias variables.
 
 ## Dependencias
 
