@@ -1,4 +1,4 @@
-# NonLinealSystemEquation
+# System-of-Equations
 
 Este proyecto tiene como objetivo crear una aplicación que permita resolver un sistema de ecuaciones no lineales. Se basa en el funcionamiento de la extensión del algoritmo de **Newtón-Raphlson** para varias variables.
 
@@ -13,7 +13,7 @@ make
 para Linux y
 
 ```bash
-dotnet run --project UserInterfaceAUI
+dotnet run --project SystemEquations
 ```
 
 para Windows.

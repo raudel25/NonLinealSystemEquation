@@ -1,5 +1,5 @@
 using Avalonia.Controls;
-using NonLinealSystemEquation;
+using SystemEquationsLogic;
 using System;
 using System.Collections.Generic;
 using Avalonia;

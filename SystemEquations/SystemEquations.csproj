@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
         <ApplicationManifest>app.manifest</ApplicationManifest>
+        <RootNamespace>UserInterfaceAUI</RootNamespace>
     </PropertyGroup>
     <ItemGroup>
         <None Remove=".gitignore" />
@@ -23,6 +24,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\NonLinealSystemEquation\NonLinealSystemEquation.csproj" />
+      <ProjectReference Include="..\SystemEquationsLogic\SystemEquationsLogic.csproj" />
     </ItemGroup>
 </Project>

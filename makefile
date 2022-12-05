@@ -1,2 +1,2 @@
 run:
-	dotnet run --project UserInterfaceAUI
+	dotnet run --project SystemEquations
