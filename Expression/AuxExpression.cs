@@ -2,6 +2,23 @@ namespace Expression;
 
 public static class Aux
 {
+    public static bool IsPolynomial(ExpressionType exp)
+    {
+        if (exp is NumberExpression || exp is VariableExpression) return true;
+
+        BinaryExpression? binary = exp as BinaryExpression;
+
+        if (binary is not null)
+        {
+            if (binary is Division || binary is Pow)
+                return binary.Right is NumberExpression && IsPolynomial(binary.Left);
+            if (binary is Sum || binary is Subtraction || binary is Multiply)
+                return IsPolynomial(binary.Left) && IsPolynomial(binary.Right);
+        }
+
+        return false;
+    }
+
     /// <summary>
     /// Colocar parentesis
     /// </summary>
@@ -59,7 +76,7 @@ public static class Aux
 
         if (unary != null) VariablesToExpression(unary.Value, variables);
     }
-    
+
     /// <summary>
     /// Determinar si la expresion es completamente numerica
     /// </summary>

@@ -20,17 +20,51 @@ public static class SystemEquation
 
         if (exps.Length == 0) return (new List<(char, double)>(), SystemState.IncorrectEquations);
 
-        MatrixFunction matrixF = new MatrixFunction(exps, variables);
-        VectorFunction vectorF = new VectorFunction(exps);
+        if (exps.Length == 1 && Aux.IsPolynomial(exps[0]))
+            return FindAllSolutions(exps, variables, initial);
 
-        return ResolveSystem(matrixF, vectorF, variables, initial);
+        return ResolveSystem(exps, variables, initial);
     }
 
     public static List<char> Variables(string[] s) => ConvertEquation.ParsingSystem(s).Item2;
 
-    private static (List<(char, double)>, SystemState) ResolveSystem(MatrixFunction matrixF, VectorFunction vectorF,
+    private static (List<(char, double)>, SystemState) FindAllSolutions(ExpressionType[] exps, List<char> variables,
+        double[] initial)
+    {
+        List<(char, double)> solutions = new List<(char, double)>();
+        int ind = 0;
+
+        (List<(char, double)> newSolutions, SystemState state) = ResolveSystem(exps, variables, initial);
+
+        while (ind < 100 && state == SystemState.Correct)
+        {
+            exps[0] /= new VariableExpression(newSolutions[0].Item1) - new NumberExpression(newSolutions[0].Item2);
+
+            if (!FindSolutionList(solutions, newSolutions[0])) solutions.Add(newSolutions[0]);
+
+            ind++;
+            (newSolutions, state) = ResolveSystem(exps, variables, initial);
+        }
+
+        return (solutions, solutions.Count == 0 ? SystemState.Error : SystemState.Correct);
+    }
+
+    private static bool FindSolutionList(List<(char, double)> list, (char, double) sol)
+    {
+        foreach (var item in list)
+        {
+            if (item.Item1 == sol.Item1 && Math.Abs(item.Item2 - sol.Item2) < 0.0001) return true;
+        }
+
+        return false;
+    }
+
+    private static (List<(char, double)>, SystemState) ResolveSystem(ExpressionType[] exps,
         List<char> variables, double[] initial)
     {
+        MatrixFunction matrixF = new MatrixFunction(exps, variables);
+        VectorFunction vectorF = new VectorFunction(exps);
+
         double[] item = initial;
         bool stop = false;
         bool error = false;
