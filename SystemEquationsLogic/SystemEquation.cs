@@ -36,12 +36,6 @@ public static class SystemEquation
         bool error = false;
         int ind = 0;
 
-        if (item.Length == 0)
-        {
-            item = new double[variables.Count];
-            for (int i = 0; i < variables.Count; i++) item[i] = 1;
-        }
-
         while (!stop && !error)
         {
             List<(char, double)> evaluate = BuildTuple(variables, item);

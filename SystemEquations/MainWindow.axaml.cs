@@ -1,6 +1,5 @@
 using Avalonia.Controls;
 using SystemEquationsLogic;
-using System;
 using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Interactivity;
@@ -67,8 +66,8 @@ public partial class MainWindow : Window
 
     private void EliminateEquation(object? sender, RoutedEventArgs e)
     {
-        if(sender is null) return;
-        
+        if (sender is null) return;
+
         Initial.IsVisible = false;
         int ind = this._eliminateEquations.IndexOf((Button)sender);
 
@@ -161,11 +160,18 @@ public partial class MainWindow : Window
 
     private double[] GetInitialValue()
     {
+        bool initial = this._initialValues.Count != 0;
         double[] aux = new double[this._initialValues.Count];
 
         for (int i = 0; i < aux.Length; i++)
         {
-            if (!double.TryParse(this._initialValues[i].Text, out aux[i])) return Array.Empty<double>();
+            if (!double.TryParse(this._initialValues[i].Text, out aux[i])) initial=false;
+        }
+
+        if (!initial)
+        {
+            aux = new double[this._equationsValue.Count];
+            for (int i = 0; i < this._equationsValue.Count; i++) aux[i] = 1;
         }
 
         return aux;
