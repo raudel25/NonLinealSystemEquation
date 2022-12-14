@@ -4,6 +4,11 @@ namespace SystemEquationsLogic;
 
 internal static class ConvertEquation
 {
+    /// <summary>
+    /// Parsear la ecuacion
+    /// </summary>
+    /// <param name="s">Ecuacion</param>
+    /// <returns>Expresion resultante</returns>
     private static ExpressionType? Parsing(string s)
     {
         string[] aux = s.Split('=');
@@ -18,6 +23,11 @@ internal static class ConvertEquation
         return ReduceExpression.Reduce(exp1 - exp2);
     }
 
+    /// <summary>
+    /// Parsear el sistema de ecuaciones
+    /// </summary>
+    /// <param name="s">Sistema de ecuaciones</param>
+    /// <returns>Lista de expresiones, Lista de variables</returns>
     internal static (ExpressionType[], List<char>) ParsingSystem(string[] s)
     {
         ExpressionType[] exps = new ExpressionType[s.Length];
@@ -37,6 +47,12 @@ internal static class ConvertEquation
         return (exps, variables);
     }
 
+    /// <summary>
+    /// Determinar si el sistema es correcto
+    /// </summary>
+    /// <param name="exps">Expresiones</param>
+    /// <param name="variables">Variables</param>
+    /// <returns>Si es sistema es correcto</returns>
     private static bool Check(ExpressionType[] exps, List<char> variables)
     {
         HashSet<char> variablesSystem = new HashSet<char>();

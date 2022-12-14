@@ -2,6 +2,11 @@ namespace Expression;
 
 public static class Aux
 {
+    /// <summary>
+    /// Determina si la expresion es un polinomio
+    /// </summary>
+    /// <param name="exp">Expresion</param>
+    /// <returns>Si la expresion es un polinomio</returns>
     public static bool IsPolynomial(ExpressionType exp)
     {
         if (exp is NumberExpression || exp is VariableExpression) return true;

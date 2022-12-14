@@ -5,6 +5,9 @@ namespace SystemEquationsLogic;
 
 public static class SystemEquation
 {
+    /// <summary>
+    /// Error en la aproximacion
+    /// </summary>
     private static double _e = 0.0000000001;
 
     public enum SystemState
@@ -14,6 +17,12 @@ public static class SystemEquation
         Correct
     }
 
+    /// <summary>
+    /// Resolver el sistema
+    /// </summary>
+    /// <param name="s">Sistema de ecuaciones</param>
+    /// <param name="initial">Valores iniciales</param>
+    /// <returns>Resultado</returns>
     public static (List<(char, double)>, SystemState) ResolveSystem(string[] s, double[] initial)
     {
         (ExpressionType[] exps, List<char> variables) = ConvertEquation.ParsingSystem(s);
@@ -26,8 +35,20 @@ public static class SystemEquation
         return ResolveSystem(exps, variables, initial);
     }
 
+    /// <summary>
+    /// Determina la lista de variables del sistema
+    /// </summary>
+    /// <param name="s">Ecuaciones</param>
+    /// <returns>Variables del sistema</returns>
     public static List<char> Variables(string[] s) => ConvertEquation.ParsingSystem(s).Item2;
 
+    /// <summary>
+    /// Encontrar todas las soluciones de un sistema de una variable
+    /// </summary>
+    /// <param name="exps">Expresion</param>
+    /// <param name="variables">Variable</param>
+    /// <param name="initial">Valor inicial</param>
+    /// <returns>Lista con las soluciones</returns>
     private static (List<(char, double)>, SystemState) FindAllSolutions(ExpressionType[] exps, List<char> variables,
         double[] initial)
     {
@@ -49,6 +70,12 @@ public static class SystemEquation
         return (solutions, solutions.Count == 0 ? SystemState.Error : SystemState.Correct);
     }
 
+    /// <summary>
+    /// Determina si la solucion ya ha sido encontrada
+    /// </summary>
+    /// <param name="list">Lista de soluciones</param>
+    /// <param name="sol">Nueva solucion</param>
+    /// <returns></returns>
     private static bool FindSolutionList(List<(char, double)> list, (char, double) sol)
     {
         foreach (var item in list)
@@ -59,6 +86,13 @@ public static class SystemEquation
         return false;
     }
 
+    /// <summary>
+    /// Resolver el sistema
+    /// </summary>
+    /// <param name="exps">Ecuasiones</param>
+    /// <param name="variables">Variables</param>
+    /// <param name="initial">Valores iniciales</param>
+    /// <returns>Soluciones</returns>
     private static (List<(char, double)>, SystemState) ResolveSystem(ExpressionType[] exps,
         List<char> variables, double[] initial)
     {
@@ -91,6 +125,12 @@ public static class SystemEquation
         return (BuildTuple(variables, item), SystemState.Correct);
     }
 
+    /// <summary>
+    /// Calcular la siguiente aproximacion
+    /// </summary>
+    /// <param name="sol">Vector solucion</param>
+    /// <param name="item">Anterior aproximacion</param>
+    /// <returns>Nueva aproximacion, valor de parada</returns>
     private static (double[], bool) NewApprox(Vector<double> sol, double[] item)
     {
         Vector<double> item1 = Vector<double>.Build.DenseOfArray(item);
@@ -101,6 +141,12 @@ public static class SystemEquation
         return (item2.ToArray(), stop);
     }
 
+    /// <summary>
+    /// Resolver el sistam de ecuaciones generado en una iteracion
+    /// </summary>
+    /// <param name="matrix">Matriz</param>
+    /// <param name="vector">Vector</param>
+    /// <returns>Solucion, error</returns>
     private static (Vector<double>, bool) SolveIteration(Matrix<double> matrix, Vector<double> vector)
     {
         Vector<double> sol = matrix.Solve(-vector);

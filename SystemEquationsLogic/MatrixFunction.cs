@@ -4,6 +4,9 @@ namespace SystemEquationsLogic;
 
 public class MatrixFunction
 {
+    /// <summary>
+    /// Matriz Jacobiana
+    /// </summary>
     private readonly ExpressionType[,] _matrix;
 
     public MatrixFunction(ExpressionType[] exps, List<char> variables)
@@ -11,6 +14,11 @@ public class MatrixFunction
         _matrix = BuildMatrix(exps, variables);
     }
 
+    /// <summary>
+    /// Evaluar la matriz de funciones
+    /// </summary>
+    /// <param name="variables">Lista de variables con sus respectivos valores</param>
+    /// <returns></returns>
     public double[,] Evaluate(List<(char, double)> variables)
     {
         double[,] result = new double[_matrix.GetLength(0), _matrix.GetLength(1)];
@@ -23,6 +31,12 @@ public class MatrixFunction
         return result;
     }
 
+    /// <summary>
+    /// Crear la matriz Jacobiana
+    /// </summary>
+    /// <param name="exps">Expresions</param>
+    /// <param name="variables">Variables</param>
+    /// <returns>Matriz Jacoviana</returns>
     private ExpressionType[,] BuildMatrix(ExpressionType[] exps, List<char> variables)
     {
         ExpressionType[,] matrix = new ExpressionType[exps.Length, exps.Length];
