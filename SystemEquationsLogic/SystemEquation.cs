@@ -113,7 +113,11 @@ public static class SystemEquation
 
             if (v.Norm(1) < _e) break;
 
-            (Vector<double> sol, error) = SolveIteration(m, v);
+            error = VectorError(v) || MatrixError(m) || error;
+
+            Vector<double> sol = m.Solve(-v);
+            error = VectorError(sol) || error;
+
             if (!error) (item, stop) = NewApprox(sol, item);
 
             ind++;
@@ -142,22 +146,39 @@ public static class SystemEquation
     }
 
     /// <summary>
-    /// Resolver el sistam de ecuaciones generado en una iteracion
+    /// Determinar si hay errores de calculo
     /// </summary>
-    /// <param name="matrix">Matriz</param>
-    /// <param name="vector">Vector</param>
-    /// <returns>Solucion, error</returns>
-    private static (Vector<double>, bool) SolveIteration(Matrix<double> matrix, Vector<double> vector)
+    /// <param name="matrix">Matrix</param>
+    /// <returns></returns>
+    private static bool MatrixError(Matrix<double> matrix)
     {
-        Vector<double> sol = matrix.Solve(-vector);
-
-        foreach (var i in sol)
+        for (int i = 0; i < matrix.RowCount; i++)
         {
-            if (i is Double.NaN || i is Double.NegativeInfinity || i is Double.PositiveInfinity)
-                return (sol, true);
+            for (int j = 0; j < matrix.ColumnCount; j++)
+            {
+                if (matrix[i, j] is Double.NaN || matrix[i, j] is Double.NegativeInfinity ||
+                    matrix[i, j] is Double.PositiveInfinity)
+                    return true;
+            }
         }
 
-        return (sol, false);
+        return false;
+    }
+
+    /// <summary>
+    /// Determinar si hay errores de calculo
+    /// </summary>
+    /// <param name="vector">Vector</param>
+    /// <returns></returns>
+    private static bool VectorError(Vector<double> vector)
+    {
+        foreach (var i in vector)
+        {
+            if (i is Double.NaN || i is Double.NegativeInfinity || i is Double.PositiveInfinity)
+                return true;
+        }
+
+        return false;
     }
 
     private static List<(char, double)> BuildTuple(List<char> variables, double[] values)

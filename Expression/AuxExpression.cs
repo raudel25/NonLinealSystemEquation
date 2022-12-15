@@ -15,8 +15,15 @@ public static class Aux
 
         if (binary is not null)
         {
-            if (binary is Division || binary is Pow)
+            if (binary is Division)
                 return binary.Right is NumberExpression && IsPolynomial(binary.Left);
+            if (binary is Pow)
+            {
+                NumberExpression? number = binary.Right as NumberExpression;
+                if (number is not null)
+                    return (int)number.Value - number.Value == 0 && IsPolynomial(binary.Left);
+            }
+
             if (binary is Sum || binary is Subtraction || binary is Multiply)
                 return IsPolynomial(binary.Left) && IsPolynomial(binary.Right);
         }

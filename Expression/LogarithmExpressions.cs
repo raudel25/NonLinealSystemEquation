@@ -23,7 +23,7 @@ public class Log : BinaryExpression
     protected override ExpressionType Derivative(char variable, ExpressionType left, ExpressionType right) =>
         (new Ln(right) / new Ln(left)).Derivative(variable);
 
-    protected override double Evaluate(double left, double right) => Math.Log(left, right);
+    protected override double Evaluate(double left, double right) => Math.Log(right, left);
 
     protected override ExpressionType EvaluateExpression(ExpressionType left, ExpressionType right) =>
         DeterminateLog(left, right);
