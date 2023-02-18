@@ -1,4 +1,6 @@
-﻿using Expression;
+﻿using Expression.Expressions;
+using Expression.Arithmetics;
+using Expression.Reduce;
 
 namespace SystemEquationsLogic;
 
@@ -8,41 +10,43 @@ internal static class ConvertEquation
     /// Parsear la ecuacion
     /// </summary>
     /// <param name="s">Ecuacion</param>
+    /// <param name="arithmeticExp">Aritmetica</param>
     /// <returns>Expresion resultante</returns>
-    private static ExpressionType? Parsing(string s)
+    private static ExpressionType<double>? Parsing(string s,ArithmeticExp<double> arithmeticExp)
     {
         string[] aux = s.Split('=');
 
         if (aux.Length != 2) return null;
 
-        ExpressionType? exp1 = ConvertExpression.Parsing(aux[0]);
-        ExpressionType? exp2 = ConvertExpression.Parsing(aux[1]);
+        ExpressionType<double>? exp1 = arithmeticExp.Parsing(aux[0]);
+        ExpressionType<double>? exp2 = arithmeticExp.Parsing(aux[1]);
 
         if (exp1 is null || exp2 is null) return null;
 
-        return ReduceExpression.Reduce(exp1 - exp2);
+        return ReduceExpression<double>.Reduce(exp1 - exp2);
     }
 
     /// <summary>
     /// Parsear el sistema de ecuaciones
     /// </summary>
     /// <param name="s">Sistema de ecuaciones</param>
+    /// <param name="arithmeticExp">Aritmetica</param>
     /// <returns>Lista de expresiones, Lista de variables</returns>
-    internal static (ExpressionType[], List<char>) ParsingSystem(string[] s)
+    internal static (ExpressionType<double>[], List<char>) ParsingSystem(string[] s,ArithmeticExp<double> arithmeticExp)
     {
-        ExpressionType[] exps = new ExpressionType[s.Length];
+        ExpressionType<double>[] exps = new ExpressionType<double>[s.Length];
         List<char> variables = new List<char>(s.Length);
 
         for (int i = 0; i < s.Length; i++)
         {
-            ExpressionType? exp = Parsing(s[i]);
+            ExpressionType<double>? exp = Parsing(s[i],arithmeticExp);
 
-            if (exp is null) return (Array.Empty<ExpressionType>(), variables);
+            if (exp is null) return (Array.Empty<ExpressionType<double>>(), variables);
 
             exps[i] = exp;
         }
 
-        if (!Check(exps, variables)) return (Array.Empty<ExpressionType>(), variables);
+        if (!Check(exps, variables)) return (Array.Empty<ExpressionType<double>>(), variables);
 
         return (exps, variables);
     }
@@ -53,13 +57,13 @@ internal static class ConvertEquation
     /// <param name="exps">Expresiones</param>
     /// <param name="variables">Variables</param>
     /// <returns>Si es sistema es correcto</returns>
-    private static bool Check(ExpressionType[] exps, List<char> variables)
+    private static bool Check(ExpressionType<double>[] exps, List<char> variables)
     {
         HashSet<char> variablesSystem = new HashSet<char>();
 
         foreach (var item1 in exps)
         {
-            List<char> aux = Aux.VariablesToExpression(item1);
+            List<char> aux = ExpressionType<double>.VariablesToExpression(item1);
 
             foreach (var item2 in aux) variablesSystem.Add(item2);
         }

@@ -1,4 +1,4 @@
-using Expression;
+using Expression.Expressions;
 
 namespace SystemEquationsLogic;
 
@@ -7,9 +7,9 @@ public class MatrixFunction
     /// <summary>
     /// Matriz Jacobiana
     /// </summary>
-    private readonly ExpressionType[,] _matrix;
+    private readonly ExpressionType<double>[,] _matrix;
 
-    public MatrixFunction(ExpressionType[] exps, List<char> variables)
+    public MatrixFunction(ExpressionType<double>[] exps, List<char> variables)
     {
         _matrix = BuildMatrix(exps, variables);
     }
@@ -37,9 +37,9 @@ public class MatrixFunction
     /// <param name="exps">Expresions</param>
     /// <param name="variables">Variables</param>
     /// <returns>Matriz Jacoviana</returns>
-    private ExpressionType[,] BuildMatrix(ExpressionType[] exps, List<char> variables)
+    private ExpressionType<double>[,] BuildMatrix(ExpressionType<double>[] exps, List<char> variables)
     {
-        ExpressionType[,] matrix = new ExpressionType[exps.Length, exps.Length];
+        ExpressionType<double>[,] matrix = new ExpressionType<double>[exps.Length, exps.Length];
 
         for (int i = 0; i < exps.Length; i++)
         {

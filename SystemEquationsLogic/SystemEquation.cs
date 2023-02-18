@@ -1,4 +1,5 @@
-using Expression;
+using Expression.Arithmetics;
+using Expression.Expressions;
 using MathNet.Numerics.LinearAlgebra;
 
 namespace SystemEquationsLogic;
@@ -18,19 +19,50 @@ public static class SystemEquation
     }
 
     /// <summary>
+    /// Determina si la expresion es un polinomio
+    /// </summary>
+    /// <param name="exp">Expresion</param>
+    /// <returns>Si la expresion es un polinomio</returns>
+    public static bool IsPolynomial(ExpressionType<double> exp)
+    {
+        if (exp is NumberExpression<double> || exp is VariableExpression<double>) return true;
+
+        BinaryExpression<double>? binary = exp as BinaryExpression<double>;
+
+        if (binary is not null)
+        {
+            if (binary is Division<double>)
+                return binary.Right is NumberExpression<double> && IsPolynomial(binary.Left);
+            if (binary is Pow<double>)
+            {
+                NumberExpression<double>? number = binary.Right as NumberExpression<double>;
+                if (number is not null)
+                    return (int)number.Value - number.Value == 0 && IsPolynomial(binary.Left);
+            }
+
+            if (binary is Sum<double> || binary is Subtraction<double> || binary is Multiply<double>)
+                return IsPolynomial(binary.Left) && IsPolynomial(binary.Right);
+        }
+
+        return false;
+    }
+
+    /// <summary>
     /// Resolver el sistema
     /// </summary>
     /// <param name="s">Sistema de ecuaciones</param>
     /// <param name="initial">Valores iniciales</param>
+    /// <param name="arithmeticExp">Aritmetica</param>
     /// <returns>Resultado</returns>
-    public static (List<(char, double)>, SystemState) ResolveSystem(string[] s, double[] initial)
+    public static (List<(char, double)>, SystemState) ResolveSystem(string[] s, double[] initial,
+        ArithmeticExp<double> arithmeticExp)
     {
-        (ExpressionType[] exps, List<char> variables) = ConvertEquation.ParsingSystem(s);
+        (ExpressionType<double>[] exps, List<char> variables) = ConvertEquation.ParsingSystem(s, arithmeticExp);
 
         if (exps.Length == 0) return (new List<(char, double)>(), SystemState.IncorrectEquations);
 
-        if (exps.Length == 1 && Aux.IsPolynomial(exps[0]))
-            return FindAllSolutions(exps, variables, initial);
+        if (exps.Length == 1 && IsPolynomial(exps[0]))
+            return FindAllSolutions(exps, variables, initial, arithmeticExp);
 
         return ResolveSystem(exps, variables, initial);
     }
@@ -39,8 +71,10 @@ public static class SystemEquation
     /// Determina la lista de variables del sistema
     /// </summary>
     /// <param name="s">Ecuaciones</param>
+    /// <param name="arithmeticExp">Aritmetica</param>
     /// <returns>Variables del sistema</returns>
-    public static List<char> Variables(string[] s) => ConvertEquation.ParsingSystem(s).Item2;
+    public static List<char> Variables(string[] s, ArithmeticExp<double> arithmeticExp) =>
+        ConvertEquation.ParsingSystem(s, arithmeticExp).Item2;
 
     /// <summary>
     /// Encontrar todas las soluciones de un sistema de una variable
@@ -48,9 +82,11 @@ public static class SystemEquation
     /// <param name="exps">Expresion</param>
     /// <param name="variables">Variable</param>
     /// <param name="initial">Valor inicial</param>
+    /// <param name="arithmeticExp">Aritmetica</param>
     /// <returns>Lista con las soluciones</returns>
-    private static (List<(char, double)>, SystemState) FindAllSolutions(ExpressionType[] exps, List<char> variables,
-        double[] initial)
+    private static (List<(char, double)>, SystemState) FindAllSolutions(ExpressionType<double>[] exps,
+        List<char> variables,
+        double[] initial, ArithmeticExp<double> arithmeticExp)
     {
         List<(char, double)> solutions = new List<(char, double)>();
         int ind = 0;
@@ -59,7 +95,8 @@ public static class SystemEquation
 
         while (ind < 100 && state == SystemState.Correct)
         {
-            exps[0] /= new VariableExpression(newSolutions[0].Item1) - new NumberExpression(newSolutions[0].Item2);
+            exps[0] /= arithmeticExp.VariableExpression(newSolutions[0].Item1) -
+                       arithmeticExp.NumberExpression(newSolutions[0].Item2);
 
             if (!FindSolutionList(solutions, newSolutions[0])) solutions.Add(newSolutions[0]);
 
@@ -93,7 +130,7 @@ public static class SystemEquation
     /// <param name="variables">Variables</param>
     /// <param name="initial">Valores iniciales</param>
     /// <returns>Soluciones</returns>
-    private static (List<(char, double)>, SystemState) ResolveSystem(ExpressionType[] exps,
+    private static (List<(char, double)>, SystemState) ResolveSystem(ExpressionType<double>[] exps,
         List<char> variables, double[] initial)
     {
         MatrixFunction matrixF = new MatrixFunction(exps, variables);

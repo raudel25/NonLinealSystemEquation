@@ -5,15 +5,17 @@ using Avalonia;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Media;
+using Expression.Arithmetics;
 
 namespace UserInterfaceAUI;
 
 public partial class MainWindow : Window
 {
-    private List<TextBox> _equationsValue;
-    private List<Grid> _equations;
-    private List<Button> _eliminateEquations;
-    private List<TextBox> _initialValues;
+    private readonly List<TextBox> _equationsValue;
+    private readonly List<Grid> _equations;
+    private readonly List<Button> _eliminateEquations;
+    private readonly List<TextBox> _initialValues;
+    private readonly ArithmeticExp<double> _arithmetic;
 
     public MainWindow()
     {
@@ -21,6 +23,7 @@ public partial class MainWindow : Window
         this._equations = new List<Grid>();
         this._eliminateEquations = new List<Button>();
         this._initialValues = new List<TextBox>();
+        this._arithmetic = new ArithmeticExp<double>(new NativeExp());
 
         InitializeComponent();
     }
@@ -85,7 +88,7 @@ public partial class MainWindow : Window
     {
         Initial.IsVisible = false;
         (List<(char, double)> result, SystemEquation.SystemState state) =
-            SystemEquation.ResolveSystem(GetEquationValue(), GetInitialValue());
+            SystemEquation.ResolveSystem(GetEquationValue(), GetInitialValue(), _arithmetic);
 
         string answer;
 
@@ -111,7 +114,7 @@ public partial class MainWindow : Window
         Initial.Children.Clear();
         this._initialValues.Clear();
 
-        List<char> variables = SystemEquation.Variables(GetEquationValue());
+        List<char> variables = SystemEquation.Variables(GetEquationValue(), _arithmetic);
         List<Grid> grids = new List<Grid>(variables.Count);
 
         foreach (var item in variables)
@@ -165,7 +168,7 @@ public partial class MainWindow : Window
 
         for (int i = 0; i < aux.Length; i++)
         {
-            if (!double.TryParse(this._initialValues[i].Text, out aux[i])) initial=false;
+            if (!double.TryParse(this._initialValues[i].Text, out aux[i])) initial = false;
         }
 
         if (!initial)

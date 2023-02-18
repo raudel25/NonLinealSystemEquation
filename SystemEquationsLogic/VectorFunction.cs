@@ -1,4 +1,4 @@
-using Expression;
+using Expression.Expressions;
 
 namespace SystemEquationsLogic;
 
@@ -7,9 +7,9 @@ public class VectorFunction
     /// <summary>
     /// Vector de funciones
     /// </summary>
-    private readonly ExpressionType[] _vector;
+    private readonly ExpressionType<double>[] _vector;
 
-    public VectorFunction(ExpressionType[] exps)
+    public VectorFunction(ExpressionType<double>[] exps)
     {
         _vector = exps;
     }
