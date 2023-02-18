@@ -1,29 +1,29 @@
-using Avalonia.Controls;
-using SystemEquationsLogic;
 using System.Collections.Generic;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Media;
 using Expression.Arithmetics;
+using SystemEquationsLogic;
 
 namespace UserInterfaceAUI;
 
 public partial class MainWindow : Window
 {
-    private readonly List<TextBox> _equationsValue;
-    private readonly List<Grid> _equations;
-    private readonly List<Button> _eliminateEquations;
-    private readonly List<TextBox> _initialValues;
     private readonly ArithmeticExp<double> _arithmetic;
+    private readonly List<Button> _eliminateEquations;
+    private readonly List<Grid> _equations;
+    private readonly List<TextBox> _equationsValue;
+    private readonly List<TextBox> _initialValues;
 
     public MainWindow()
     {
-        this._equationsValue = new List<TextBox>();
-        this._equations = new List<Grid>();
-        this._eliminateEquations = new List<Button>();
-        this._initialValues = new List<TextBox>();
-        this._arithmetic = new ArithmeticExp<double>(new NativeExp());
+        _equationsValue = new List<TextBox>();
+        _equations = new List<Grid>();
+        _eliminateEquations = new List<Button>();
+        _initialValues = new List<TextBox>();
+        _arithmetic = new ArithmeticExp<double>(new NativeExp());
 
         InitializeComponent();
     }
@@ -52,9 +52,9 @@ public partial class MainWindow : Window
         button.Background = Brushes.Azure;
         button.Content = "X";
 
-        this._eliminateEquations.Add(button);
-        this._equationsValue.Add(text);
-        this._equations.Add(grid);
+        _eliminateEquations.Add(button);
+        _equationsValue.Add(text);
+        _equations.Add(grid);
 
         grid.Children.Add(text);
         grid.Children.Add(button);
@@ -72,14 +72,14 @@ public partial class MainWindow : Window
         if (sender is null) return;
 
         Initial.IsVisible = false;
-        int ind = this._eliminateEquations.IndexOf((Button)sender);
+        var ind = _eliminateEquations.IndexOf((Button)sender);
 
 
-        this._equations.RemoveAt(ind);
-        this._eliminateEquations.RemoveAt(ind);
-        this._equationsValue.RemoveAt(ind);
+        _equations.RemoveAt(ind);
+        _eliminateEquations.RemoveAt(ind);
+        _equationsValue.RemoveAt(ind);
 
-        for (int i = 0; i < this._equations.Count; i++) Grid.SetRow(this._equations[i], i);
+        for (var i = 0; i < _equations.Count; i++) Grid.SetRow(_equations[i], i);
         Equations.Children.RemoveAt(ind);
         Equations.RowDefinitions.RemoveAt(Equations.RowDefinitions.Count - 1);
     }
@@ -87,7 +87,7 @@ public partial class MainWindow : Window
     private void Resolve(object? sender, RoutedEventArgs e)
     {
         Initial.IsVisible = false;
-        (List<(char, double)> result, SystemEquation.SystemState state) =
+        var (result, state) =
             SystemEquation.ResolveSystem(GetEquationValue(), GetInitialValue(), _arithmetic);
 
         string answer;
@@ -98,13 +98,15 @@ public partial class MainWindow : Window
             foreach (var item in result) answer = $"{answer}{item.Item1} = {item.Item2}\n";
         }
         else
+        {
             answer = state == SystemEquation.SystemState.IncorrectEquations
                 ? "Las ecuaciones no son válidas"
                 : "No se ha podido encontrar solución";
+        }
 
         Result.Text = answer;
 
-        this._initialValues.Clear();
+        _initialValues.Clear();
     }
 
     private void InitialValue(object? sender, RoutedEventArgs e)
@@ -112,10 +114,10 @@ public partial class MainWindow : Window
         Initial.IsVisible = true;
         Initial.ColumnDefinitions.Clear();
         Initial.Children.Clear();
-        this._initialValues.Clear();
+        _initialValues.Clear();
 
-        List<char> variables = SystemEquation.Variables(GetEquationValue(), _arithmetic);
-        List<Grid> grids = new List<Grid>(variables.Count);
+        var variables = SystemEquation.Variables(GetEquationValue(), _arithmetic);
+        var grids = new List<Grid>(variables.Count);
 
         foreach (var item in variables)
         {
@@ -128,9 +130,11 @@ public partial class MainWindow : Window
             text.TextAlignment = TextAlignment.Center;
             text.Width = 25;
 
-            var aux = new Grid();
-            aux.Height = 25;
-            aux.Margin = new Thickness(2);
+            var aux = new Grid
+            {
+                Height = 25,
+                Margin = new Thickness(2)
+            };
             aux.ColumnDefinitions.Add(new ColumnDefinition());
             aux.ColumnDefinitions.Add(new ColumnDefinition());
 
@@ -138,12 +142,12 @@ public partial class MainWindow : Window
             Grid.SetColumn(text, 1);
             aux.Children.Add(label);
             aux.Children.Add(text);
-            this._initialValues.Add(text);
+            _initialValues.Add(text);
 
             grids.Add(aux);
         }
 
-        for (int i = 0; i < grids.Count; i++)
+        for (var i = 0; i < grids.Count; i++)
         {
             Initial.ColumnDefinitions.Add(new ColumnDefinition());
             Grid.SetColumn(grids[i], i);
@@ -153,28 +157,27 @@ public partial class MainWindow : Window
 
     private string[] GetEquationValue()
     {
-        string[] s = new string[this._equationsValue.Count];
+        var s = new string[_equationsValue.Count];
 
-        for (int i = 0; i < s.Length; i++)
-            s[i] = this._equationsValue[i].Text is null ? "" : this._equationsValue[i].Text;
+        for (var i = 0; i < s.Length; i++)
+            s[i] = _equationsValue[i].Text is null ? "" : _equationsValue[i].Text;
 
         return s;
     }
 
     private double[] GetInitialValue()
     {
-        bool initial = this._initialValues.Count != 0;
-        double[] aux = new double[this._initialValues.Count];
+        var initial = _initialValues.Count != 0;
+        var aux = new double[_initialValues.Count];
 
-        for (int i = 0; i < aux.Length; i++)
-        {
-            if (!double.TryParse(this._initialValues[i].Text, out aux[i])) initial = false;
-        }
+        for (var i = 0; i < aux.Length; i++)
+            if (!double.TryParse(_initialValues[i].Text, out aux[i]))
+                initial = false;
 
         if (!initial)
         {
-            aux = new double[this._equationsValue.Count];
-            for (int i = 0; i < this._equationsValue.Count; i++) aux[i] = 1;
+            aux = new double[_equationsValue.Count];
+            for (var i = 0; i < _equationsValue.Count; i++) aux[i] = 1;
         }
 
         return aux;

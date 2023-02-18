@@ -5,7 +5,7 @@ namespace SystemEquationsLogic;
 public class VectorFunction
 {
     /// <summary>
-    /// Vector de funciones
+    ///     Vector de funciones
     /// </summary>
     private readonly ExpressionType<double>[] _vector;
 
@@ -15,15 +15,15 @@ public class VectorFunction
     }
 
     /// <summary>
-    /// Evaluar el vector de funciones
+    ///     Evaluar el vector de funciones
     /// </summary>
     /// <param name="variables">Variables con sus resoectivos valores</param>
     /// <returns>Vector</returns>
     public double[] Evaluate(List<(char, double)> variables)
     {
-        double[] result = new double[_vector.Length];
+        var result = new double[_vector.Length];
 
-        for (int i = 0; i < _vector.Length; i++) result[i] = _vector[i].Evaluate(variables);
+        for (var i = 0; i < _vector.Length; i++) result[i] = _vector[i].Evaluate(variables);
 
         return result;
     }

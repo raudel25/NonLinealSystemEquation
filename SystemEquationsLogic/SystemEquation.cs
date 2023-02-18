@@ -6,11 +6,6 @@ namespace SystemEquationsLogic;
 
 public static class SystemEquation
 {
-    /// <summary>
-    /// Error en la aproximacion
-    /// </summary>
-    private static double _e = 0.0000000001;
-
     public enum SystemState
     {
         Error,
@@ -19,24 +14,26 @@ public static class SystemEquation
     }
 
     /// <summary>
-    /// Determina si la expresion es un polinomio
+    ///     Error en la aproximacion
+    /// </summary>
+    private const double E = 0.0000000001;
+
+    /// <summary>
+    ///     Determina si la expresion es un polinomio
     /// </summary>
     /// <param name="exp">Expresion</param>
     /// <returns>Si la expresion es un polinomio</returns>
-    public static bool IsPolynomial(ExpressionType<double> exp)
+    private static bool IsPolynomial(ExpressionType<double> exp)
     {
         if (exp is NumberExpression<double> || exp is VariableExpression<double>) return true;
 
-        BinaryExpression<double>? binary = exp as BinaryExpression<double>;
-
-        if (binary is not null)
+        if (exp is BinaryExpression<double> binary)
         {
             if (binary is Division<double>)
                 return binary.Right is NumberExpression<double> && IsPolynomial(binary.Left);
             if (binary is Pow<double>)
             {
-                NumberExpression<double>? number = binary.Right as NumberExpression<double>;
-                if (number is not null)
+                if (binary.Right is NumberExpression<double> number)
                     return (int)number.Value - number.Value == 0 && IsPolynomial(binary.Left);
             }
 
@@ -48,7 +45,7 @@ public static class SystemEquation
     }
 
     /// <summary>
-    /// Resolver el sistema
+    ///     Resolver el sistema
     /// </summary>
     /// <param name="s">Sistema de ecuaciones</param>
     /// <param name="initial">Valores iniciales</param>
@@ -57,7 +54,7 @@ public static class SystemEquation
     public static (List<(char, double)>, SystemState) ResolveSystem(string[] s, double[] initial,
         ArithmeticExp<double> arithmeticExp)
     {
-        (ExpressionType<double>[] exps, List<char> variables) = ConvertEquation.ParsingSystem(s, arithmeticExp);
+        var (exps, variables) = ConvertEquation.ParsingSystem(s, arithmeticExp);
 
         if (exps.Length == 0) return (new List<(char, double)>(), SystemState.IncorrectEquations);
 
@@ -68,16 +65,18 @@ public static class SystemEquation
     }
 
     /// <summary>
-    /// Determina la lista de variables del sistema
+    ///     Determina la lista de variables del sistema
     /// </summary>
     /// <param name="s">Ecuaciones</param>
     /// <param name="arithmeticExp">Aritmetica</param>
     /// <returns>Variables del sistema</returns>
-    public static List<char> Variables(string[] s, ArithmeticExp<double> arithmeticExp) =>
-        ConvertEquation.ParsingSystem(s, arithmeticExp).Item2;
+    public static List<char> Variables(string[] s, ArithmeticExp<double> arithmeticExp)
+    {
+        return ConvertEquation.ParsingSystem(s, arithmeticExp).Item2;
+    }
 
     /// <summary>
-    /// Encontrar todas las soluciones de un sistema de una variable
+    ///     Encontrar todas las soluciones de un sistema de una variable
     /// </summary>
     /// <param name="exps">Expresion</param>
     /// <param name="variables">Variable</param>
@@ -88,10 +87,10 @@ public static class SystemEquation
         List<char> variables,
         double[] initial, ArithmeticExp<double> arithmeticExp)
     {
-        List<(char, double)> solutions = new List<(char, double)>();
-        int ind = 0;
+        var solutions = new List<(char, double)>();
+        var ind = 0;
 
-        (List<(char, double)> newSolutions, SystemState state) = ResolveSystem(exps, variables, initial);
+        var (newSolutions, state) = ResolveSystem(exps, variables, initial);
 
         while (ind < 100 && state == SystemState.Correct)
         {
@@ -108,7 +107,7 @@ public static class SystemEquation
     }
 
     /// <summary>
-    /// Determina si la solucion ya ha sido encontrada
+    ///     Determina si la solucion ya ha sido encontrada
     /// </summary>
     /// <param name="list">Lista de soluciones</param>
     /// <param name="sol">Nueva solucion</param>
@@ -116,15 +115,14 @@ public static class SystemEquation
     private static bool FindSolutionList(List<(char, double)> list, (char, double) sol)
     {
         foreach (var item in list)
-        {
-            if (item.Item1 == sol.Item1 && Math.Abs(item.Item2 - sol.Item2) < 0.0001) return true;
-        }
+            if (item.Item1 == sol.Item1 && Math.Abs(item.Item2 - sol.Item2) < 0.0001)
+                return true;
 
         return false;
     }
 
     /// <summary>
-    /// Resolver el sistema
+    ///     Resolver el sistema
     /// </summary>
     /// <param name="exps">Ecuasiones</param>
     /// <param name="variables">Variables</param>
@@ -133,26 +131,26 @@ public static class SystemEquation
     private static (List<(char, double)>, SystemState) ResolveSystem(ExpressionType<double>[] exps,
         List<char> variables, double[] initial)
     {
-        MatrixFunction matrixF = new MatrixFunction(exps, variables);
-        VectorFunction vectorF = new VectorFunction(exps);
+        var matrixF = new MatrixFunction(exps, variables);
+        var vectorF = new VectorFunction(exps);
 
-        double[] item = initial;
-        bool stop = false;
-        bool error = false;
-        int ind = 0;
+        var item = initial;
+        var stop = false;
+        var error = false;
+        var ind = 0;
 
         while (!stop && !error)
         {
-            List<(char, double)> evaluate = BuildTuple(variables, item);
+            var evaluate = BuildTuple(variables, item);
 
-            Matrix<double> m = Matrix<double>.Build.DenseOfArray(matrixF.Evaluate(evaluate));
-            Vector<double> v = Vector<double>.Build.DenseOfArray(vectorF.Evaluate(evaluate));
+            var m = Matrix<double>.Build.DenseOfArray(matrixF.Evaluate(evaluate));
+            var v = Vector<double>.Build.DenseOfArray(vectorF.Evaluate(evaluate));
 
-            if (v.Norm(1) < _e) break;
+            if (v.Norm(1) < E) break;
 
             error = VectorError(v) || MatrixError(m) || error;
 
-            Vector<double> sol = m.Solve(-v);
+            var sol = m.Solve(-v);
             error = VectorError(sol) || error;
 
             if (!error) (item, stop) = NewApprox(sol, item);
@@ -167,62 +165,56 @@ public static class SystemEquation
     }
 
     /// <summary>
-    /// Calcular la siguiente aproximacion
+    ///     Calcular la siguiente aproximacion
     /// </summary>
     /// <param name="sol">Vector solucion</param>
     /// <param name="item">Anterior aproximacion</param>
     /// <returns>Nueva aproximacion, valor de parada</returns>
     private static (double[], bool) NewApprox(Vector<double> sol, double[] item)
     {
-        Vector<double> item1 = Vector<double>.Build.DenseOfArray(item);
-        Vector<double> item2 = sol + item1;
+        var item1 = Vector<double>.Build.DenseOfArray(item);
+        var item2 = sol + item1;
 
-        bool stop = sol.Norm(1) < _e;
+        var stop = sol.Norm(1) < E;
 
         return (item2.ToArray(), stop);
     }
 
     /// <summary>
-    /// Determinar si hay errores de calculo
+    ///     Determinar si hay errores de calculo
     /// </summary>
     /// <param name="matrix">Matrix</param>
     /// <returns></returns>
     private static bool MatrixError(Matrix<double> matrix)
     {
-        for (int i = 0; i < matrix.RowCount; i++)
-        {
-            for (int j = 0; j < matrix.ColumnCount; j++)
-            {
-                if (matrix[i, j] is Double.NaN || matrix[i, j] is Double.NegativeInfinity ||
-                    matrix[i, j] is Double.PositiveInfinity)
-                    return true;
-            }
-        }
+        for (var i = 0; i < matrix.RowCount; i++)
+        for (var j = 0; j < matrix.ColumnCount; j++)
+            if (matrix[i, j] is double.NaN || matrix[i, j] is double.NegativeInfinity ||
+                matrix[i, j] is double.PositiveInfinity)
+                return true;
 
         return false;
     }
 
     /// <summary>
-    /// Determinar si hay errores de calculo
+    ///     Determinar si hay errores de calculo
     /// </summary>
     /// <param name="vector">Vector</param>
     /// <returns></returns>
     private static bool VectorError(Vector<double> vector)
     {
         foreach (var i in vector)
-        {
-            if (i is Double.NaN || i is Double.NegativeInfinity || i is Double.PositiveInfinity)
+            if (i is double.NaN || i is double.NegativeInfinity || i is double.PositiveInfinity)
                 return true;
-        }
 
         return false;
     }
 
     private static List<(char, double)> BuildTuple(List<char> variables, double[] values)
     {
-        List<(char, double)> aux = new List<(char, double)>(values.Length);
+        var aux = new List<(char, double)>(values.Length);
 
-        for (int i = 0; i < values.Length; i++) aux.Add((variables[i], values[i]));
+        for (var i = 0; i < values.Length; i++) aux.Add((variables[i], values[i]));
 
         return aux;
     }
