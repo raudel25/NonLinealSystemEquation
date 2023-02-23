@@ -7,9 +7,9 @@ public class VectorFunction
     /// <summary>
     ///     Vector de funciones
     /// </summary>
-    private readonly ExpressionType<double>[] _vector;
+    private readonly Function<double>[] _vector;
 
-    public VectorFunction(ExpressionType<double>[] exps)
+    public VectorFunction(Function<double>[] exps)
     {
         _vector = exps;
     }

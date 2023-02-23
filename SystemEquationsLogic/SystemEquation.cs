@@ -23,7 +23,7 @@ public static class SystemEquation
     /// </summary>
     /// <param name="exp">Expresion</param>
     /// <returns>Si la expresion es un polinomio</returns>
-    private static bool IsPolynomial(ExpressionType<double> exp)
+    private static bool IsPolynomial(Function<double> exp)
     {
         if (exp is NumberExpression<double> || exp is VariableExpression<double>) return true;
 
@@ -83,7 +83,7 @@ public static class SystemEquation
     /// <param name="initial">Valor inicial</param>
     /// <param name="arithmeticExp">Aritmetica</param>
     /// <returns>Lista con las soluciones</returns>
-    private static (List<(char, double)>, SystemState) FindAllSolutions(ExpressionType<double>[] exps,
+    private static (List<(char, double)>, SystemState) FindAllSolutions(Function<double>[] exps,
         List<char> variables,
         double[] initial, ArithmeticExp<double> arithmeticExp)
     {
@@ -128,7 +128,7 @@ public static class SystemEquation
     /// <param name="variables">Variables</param>
     /// <param name="initial">Valores iniciales</param>
     /// <returns>Soluciones</returns>
-    private static (List<(char, double)>, SystemState) ResolveSystem(ExpressionType<double>[] exps,
+    private static (List<(char, double)>, SystemState) ResolveSystem(Function<double>[] exps,
         List<char> variables, double[] initial)
     {
         var matrixF = new MatrixFunction(exps, variables);

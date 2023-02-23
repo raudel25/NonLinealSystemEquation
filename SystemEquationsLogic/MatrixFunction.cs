@@ -7,9 +7,9 @@ public class MatrixFunction
     /// <summary>
     ///     Matriz Jacobiana
     /// </summary>
-    private readonly ExpressionType<double>[,] _matrix;
+    private readonly Function<double>[,] _matrix;
 
-    public MatrixFunction(ExpressionType<double>[] exps, List<char> variables)
+    public MatrixFunction(Function<double>[] exps, List<char> variables)
     {
         _matrix = BuildMatrix(exps, variables);
     }
@@ -36,9 +36,9 @@ public class MatrixFunction
     /// <param name="exps">Expresions</param>
     /// <param name="variables">Variables</param>
     /// <returns>Matriz Jacoviana</returns>
-    private ExpressionType<double>[,] BuildMatrix(ExpressionType<double>[] exps, List<char> variables)
+    private Function<double>[,] BuildMatrix(Function<double>[] exps, List<char> variables)
     {
-        var matrix = new ExpressionType<double>[exps.Length, exps.Length];
+        var matrix = new Function<double>[exps.Length, exps.Length];
 
         for (var i = 0; i < exps.Length; i++)
         for (var j = 0; j < exps.Length; j++)
