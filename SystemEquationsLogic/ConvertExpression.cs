@@ -22,7 +22,7 @@ internal static class ConvertEquation
 
         if (exp1 is null || exp2 is null) return null;
 
-        return Function<double>.Reduce(exp1 - exp2);
+        return (exp1 - exp2).Reduce;
     }
 
     /// <summary>
@@ -63,7 +63,7 @@ internal static class ConvertEquation
 
         foreach (var item1 in exps)
         {
-            var aux = Function<double>.VariablesToExpression(item1);
+            var aux = item1.VariablesToExpression;
 
             foreach (var item2 in aux) variablesSystem.Add(item2);
         }

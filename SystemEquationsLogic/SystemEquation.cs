@@ -57,11 +57,38 @@ public static class SystemEquation
         var (exps, variables) = ConvertEquation.ParsingSystem(s, arithmeticExp);
 
         if (exps.Length == 0) return (new List<(char, double)>(), SystemState.IncorrectEquations);
+        
+        var all = exps.Length == 1 && IsPolynomial(exps[0]);
 
-        if (exps.Length == 1 && IsPolynomial(exps[0]))
-            return FindAllSolutions(exps, variables, initial, arithmeticExp);
+        if (initial.Length == 0) return DeterminateInitial(exps, variables, arithmeticExp,all);
 
-        return ResolveSystem(exps, variables, initial);
+        return all?FindAllSolutions(exps, variables, initial, arithmeticExp):ResolveSystem(exps, variables, initial);
+    }
+
+    private static (List<(char, double)>, SystemState) DeterminateInitial(Function<double>[] exps, List<char> variables,
+        ArithmeticExp<double> arithmeticExp, bool all)
+    {
+        var initial = new double[exps.Length];
+        var result = (new List<(char, double)>(), SystemState.Error);
+
+        var ind = 0;
+
+        while (result.Item2 == SystemState.Error && ind < 100)
+        {
+            var rnd = new Random();
+            for (var i = 0; i < exps.Length; i++)
+            {
+                initial[i] = rnd.Next(10);
+            }
+
+            result = all
+                ? FindAllSolutions(exps, variables, initial, arithmeticExp)
+                : ResolveSystem(exps, variables, initial);
+
+            ind++;
+        }
+
+        return result;
     }
 
     /// <summary>

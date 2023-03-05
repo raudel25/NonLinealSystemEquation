@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
@@ -174,12 +175,6 @@ public partial class MainWindow : Window
             if (!double.TryParse(_initialValues[i].Text, out aux[i]))
                 initial = false;
 
-        if (!initial)
-        {
-            aux = new double[_equationsValue.Count];
-            for (var i = 0; i < _equationsValue.Count; i++) aux[i] = 1;
-        }
-
-        return aux;
+        return !initial ? Array.Empty<double>() : aux;
     }
 }
